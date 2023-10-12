@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi import FastAPI, Request, APIRouter, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from chatgpt import MyOpenAI
 # Uncomment to deploy
@@ -26,17 +26,18 @@ app.add_middleware(
     allow_headers=["*"],  # Allow all headers in the request
 )
 
-router = APIRouter()
+# router = APIRouter()
 # Uncomment to deploy.  This assumes the all class to the /fastapi folder will come
 # here.
 # app.include_router(router, prefix="/fastapi")
 
 
 @app.post("/chat/")
-async def chat(prompt: str):
+async def chat(request: Request):
     # Configure the OpenAI library with your API key
     # Create a file on your filesystem with the openai key.
-    return MyOpenAI.chat(prompt)
+    post_data = await request.json()
+    return MyOpenAI.chat(post_data['content'])
 
 
 @app.post("/clear/")

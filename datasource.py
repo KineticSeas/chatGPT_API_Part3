@@ -113,7 +113,7 @@ class SqlData(Db):
                 if key != 'table_name' and key != 'id' and key != 'create_timestamp' and key != 'action':
                     cursor = conn.cursor()
                     sql = "update " + table_name + " set " + key + " = %s where id = %s"
-                    v = (my_dict[key], my_id)
+                    v = (str(my_dict[key]), my_id)
                     cursor.execute(sql, v)
             conn.commit()
         # delete
